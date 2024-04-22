@@ -1,0 +1,157 @@
+{
+    "process_config": {
+        "file_structure": {
+            "file_parent_folder_path": "path/to/parent/folder",
+            "data_sources_folder": "name_of_folder_holding_data_source_files",
+            "data_backup_folder": "name_of_folder_to_put_files_after_processing",
+            "final_export_location": "name_of_folder_to_put_final_redcap_import",
+            "data_key_path": "path/to/data/key/file.csv"
+        }
+    },
+    "data_sources": {
+        "simple_example_source": {
+            "type": "Spreadsheet", // type of data source, either "Qualtrics" or "Spreadsheet" 
+            "file_name": "example_file.csv", // name of data source file
+            "union": null, // if this is a consent form put "consent" else, put null
+            "config": {
+                "clean": true,
+                "grouping": false,
+                "data_dictionary": {},
+                "looping_questions": {},
+                "survey_scoring": {}
+            }
+        },
+        "complex_example_source": {
+            "type": "Spreadsheet", // type of data source, either "Qualtrics" or "Spreadsheet"
+            "file_name": "example_file.csv", // name of data source file
+            "union": "consent", // if this is a consent form put "consent" else, put null
+            "config": {
+                "clean": false, // if your data source is already clean and in the correct format (no transformation needed)
+                "grouping": true, // if your data source uses custom grouping logic
+                "data_dictionary": { // if your dataset needs column headers to be translated during transformation use this format
+                    "old_header_1": "new_header_1",
+                    "old_header_2": "new_header_2",
+                    "old_header_3": "new_header_3",
+                    "old_header_4": "new_header_4",
+                    "old_header_5": "new_header_5",
+                    "old_header_6": "new_header_6",
+                    "old_header_7": "new_header_7",
+                    "old_header_8": "new_header_8",
+                    "old_header_9": "new_header_9"
+                },
+                "looping_questions": { // if your data source has any looping fields (surveys) use the format "pattern": number_of_repetitions
+                    "question_pattern_1": 10,
+                    "question_pattern_2": 20
+                },
+                "survey_scoring": { // if your data source uses custom transformations for validated surveys
+                    "eq5d": {
+                        "question_prefix": "qq_eq5d",
+                        "scoring_method": "eq5d"
+                    },
+                    "wai": {
+                        "question_prefix": "qq_wai",
+                        "scoring_method": "wai",
+                        "category": {
+                            "1": [
+                                0,
+                                20
+                            ],
+                            "2": [
+                                21,
+                                29
+                            ],
+                            "3": [
+                                30,
+                                36
+                            ],
+                            "4": [
+                                37,
+                                42
+                            ]
+                        }
+                    },
+                    "pss": {
+                        "question_prefix": "qq_pss",
+                        "scoring_method": "normal",
+                        "category": {
+                            "1": [
+                                0,
+                                13
+                            ],
+                            "2": [
+                                14,
+                                26
+                            ],
+                            "3": [
+                                27,
+                                40
+                            ]
+                        }
+                    },
+                    "fss": {
+                        "question_prefix": "qq_fss",
+                        "scoring_method": "normal",
+                        "category": {
+                            "1": [
+                                0,
+                                36
+                            ],
+                            "2": [
+                                37,
+                                66
+                            ]
+                        }
+                    },
+                    "gad7": {
+                        "question_prefix": "qq_gad7",
+                        "scoring_method": "normal",
+                        "category": {
+                            "1": [
+                                0,
+                                4
+                            ],
+                            "2": [
+                                5,
+                                9
+                            ],
+                            "3": [
+                                10,
+                                14
+                            ],
+                            "4": [
+                                15,
+                                21
+                            ]
+                        }
+                    },
+                    "phq8": {
+                        "question_prefix": "qq_phq8",
+                        "scoring_method": "normal",
+                        "category": {
+                            "1": [
+                                0,
+                                4
+                            ],
+                            "2": [
+                                5,
+                                9
+                            ],
+                            "3": [
+                                10,
+                                14
+                            ],
+                            "4": [
+                                15,
+                                19
+                            ],
+                            "5": [
+                                20,
+                                24
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

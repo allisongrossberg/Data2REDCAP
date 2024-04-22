@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+data2redcap = {editable = true, path = "."}
+
+[dev-packages]
+data2redcap = {editable = true, path = "."}
+
+[requires]
+python_version = "3.11"

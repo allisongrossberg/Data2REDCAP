@@ -141,7 +141,7 @@ headers/
 jupyter_notebooks/
 
 #folder structure
-files
+files/*
 
 #config
 config.json
