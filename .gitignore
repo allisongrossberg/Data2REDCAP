@@ -148,3 +148,6 @@ config.json
 
 #notebooks
 notebooks/*
+
+#spreadsheets
+*.xlsx
