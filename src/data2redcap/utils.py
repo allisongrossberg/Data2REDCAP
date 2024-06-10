@@ -188,15 +188,16 @@ def join_with_data_key(data_key_path: str, df_list: list[pd.DataFrame]) -> pd.Da
     return data_key_df
 
 
-def create_final_redcap_format(df_dict: dict, process_config: dict) -> pd.DataFrame:
-    """Creates final redcap data frame.
+def create_final_redcap_format(df_dict: dict, process_config: dict, event: str) -> pd.DataFrame:
+    """Creates final redcap data structure.
 
     Arguments:
         df_dict: Dictionary of data source data frames.
         process_config: Dictionary containing configuration for overall data processing.
+        event: Name of REDCAP event.
 
     Returns:
-        export_df: Final redcap data frame.
+        records: Final redcap data structure.
     """
     # create final list of dataframe to merge
     final_df_list = create_final_df_list(df_dict=df_dict)
@@ -204,12 +205,23 @@ def create_final_redcap_format(df_dict: dict, process_config: dict) -> pd.DataFr
     wide_joined_df = join_with_data_key(
         process_config["file_structure"]["data_key_path"], final_df_list
     )
+    # filter down to only rows where participant id is TS1R0
+    # wide_joined_df = wide_joined_df.loc[wide_joined_df["participant_id"] == "TS1R0"]
+    # Convert all datetime columns to string
+    for col in wide_joined_df.columns:
+        if wide_joined_df[col].dtype == "datetime64[ns]":
+            wide_joined_df[col] = wide_joined_df[col].astype(str)
+    # convert record_num column to string
+    wide_joined_df["record_num"] = wide_joined_df["record_num"].astype(str)
+    # Fill in event field
+    wide_joined_df["redcap_event_name"] = event
     logger.info("All data sources successfully merged with data key")
     # add column where every value is "Record" in the first column slot
-    wide_joined_df[" "] = "Record"
-    # transpose with Record being at the to
-    export_df = wide_joined_df.set_index(" ").T
-    return export_df
+    records = wide_joined_df.to_dict("records")
+    #drop all Na values from each record
+    # for record in records:
+    #     record = {k: v for k, v in record.items() if pd.notna(v)}
+    return records
 
 
 def create_final_df_list(df_dict: dict) -> list[pd.DataFrame]:
@@ -255,3 +267,4 @@ def export_file(df: pd.DataFrame, file_structure: dict) -> None:
     )
     df.to_csv(file_path)
     logger.info("Redcap import file successfully exported. Process complete.")
+
