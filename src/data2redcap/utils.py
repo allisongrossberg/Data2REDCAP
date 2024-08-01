@@ -183,6 +183,8 @@ def join_with_data_key(data_key_path: str, df_list: list[pd.DataFrame]) -> pd.Da
     """
     data_key_df = pd.read_excel(data_key_path)
     for df in df_list:
+        # strip trailing and leading spaces from participant_id
+        df["participant_id"] = df["participant_id"].str.strip()
         data_key_df = data_key_df.merge(df, on="participant_id", how="left")
     logger.info("Data key successfully added to merged data")
     return data_key_df
